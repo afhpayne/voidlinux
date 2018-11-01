@@ -1,2 +1,2 @@
-# voidlinux
-Installation notes for void linux
+# Void Linux
+Notes and admin wiki
