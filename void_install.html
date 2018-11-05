@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Void Linux Install Notes</title>
+<!-- 2018-11-05 Mon 14:11 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Org-mode">
+<meta name="author" content="andrew">
+
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<style type="text/css">
+/* org mode styles on top of twbs */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-size: 18px;
+    margin-bottom: 105px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 101px;
+    background-color: #f5f5f5;
+}
+
+footer > div {
+    padding: 10px;
+}
+
+footer p {
+    margin: 0 0 5px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#table-of-contents {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+blockquote p {
+    font-size: 18px;
+}
+
+pre {
+    font-size: 16px;
+}
+
+.footpara {
+    display: inline-block;
+}
+
+figcaption {
+  font-size: 16px;
+  color: #666;
+  font-style: italic;
+  padding-bottom: 15px;
+}
+
+/* from twbs docs */
+
+.bs-docs-sidebar.affix {
+    position: static;
+}
+@media (min-width: 768px) {
+    .bs-docs-sidebar {
+        padding-left: 20px;
+    }
+}
+
+/* All levels of nav */
+.bs-docs-sidebar .nav > li > a {
+    display: block;
+    padding: 4px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #999;
+}
+.bs-docs-sidebar .nav > li > a:hover,
+.bs-docs-sidebar .nav > li > a:focus {
+    padding-left: 19px;
+    color: #A1283B;
+    text-decoration: none;
+    background-color: transparent;
+    border-left: 1px solid #A1283B;
+}
+.bs-docs-sidebar .nav > .active > a,
+.bs-docs-sidebar .nav > .active:hover > a,
+.bs-docs-sidebar .nav > .active:focus > a {
+    padding-left: 18px;
+    font-weight: bold;
+    color: #A1283B;
+    background-color: transparent;
+    border-left: 2px solid #A1283B;
+}
+
+/* Nav: second level (shown on .active) */
+.bs-docs-sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav > li > a:focus {
+    padding-left: 29px;
+}
+.bs-docs-sidebar .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav > .active:focus > a {
+    padding-left: 28px;
+    font-weight: 500;
+}
+
+/* Nav: third level (shown on .active) */
+.bs-docs-sidebar .nav .nav .nav {
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 40px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav .nav > li > a:focus {
+    padding-left: 39px;
+}
+.bs-docs-sidebar .nav .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav .nav > .active:focus > a {
+    padding-left: 38px;
+    font-weight: 500;
+}
+
+/* Show and affix the side nav when space allows it */
+@media (min-width: 992px) {
+    .bs-docs-sidebar .nav > .active > ul {
+        display: block;
+    }
+    /* Widen the fixed sidebar */
+    .bs-docs-sidebar.affix,
+    .bs-docs-sidebar.affix-bottom {
+        width: 213px;
+    }
+    .bs-docs-sidebar.affix {
+        position: fixed; /* Undo the static from mobile first approach */
+        top: 20px;
+    }
+    .bs-docs-sidebar.affix-bottom {
+        position: absolute; /* Undo the static from mobile first approach */
+    }
+    .bs-docs-sidebar.affix .bs-docs-sidenav,.bs-docs-sidebar.affix-bottom .bs-docs-sidenav {
+        margin-top: 0;
+        margin-bottom: 0
+    }
+}
+@media (min-width: 1200px) {
+    /* Widen the fixed sidebar again */
+    .bs-docs-sidebar.affix-bottom,
+    .bs-docs-sidebar.affix {
+        width: 263px;
+    }
+}
+</style>
+<script type="text/javascript">
+$(function() {
+    'use strict';
+
+    $('.bs-docs-sidebar li').first().addClass('active');
+
+    $(document.body).scrollspy({target: '.bs-docs-sidebar'});
+
+    $('.bs-docs-sidebar').affix();
+});
+</script>
+</head>
+<body>
+<div id="content" class="container">
+<div class="row"><div class="col-md-9"><h1 class="title">Void Linux Install Notes</h1>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Creating LVM on encrypted Luks Partition</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Also see <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#LVM_on_LUKS">Arch Wiki</a>
+</li>
+</ul>
+
+<p>
+<b>drive example = /dev/sdx</b>
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Create partition</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<code>gdisk</code><br >
+<code>make drive gpt</code><br >
+<code>create EFI partition ~600MiB</code><br >
+<code>create Linux partition 100% remaining</code><br >
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Format efi as FAT32</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+
+<pre class="src src-bash">mkfs.fat -F 32 /dev/sdx1
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Encrypt linux partition</h3>
+<div class="outline-text-3" id="text-1-3">
+<div class="org-src-container">
+
+<pre class="src src-bash">cryptsetup luksFormat --type luks2 /dev/sdx2
+cryptsetup luksOpen /dev/sdx2 crypt_name
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> Make LVM partitions</h3>
+<div class="outline-text-3" id="text-1-4">
+<div class="org-src-container">
+
+<pre class="src src-bash">pvcreate /dev/mapper/crypt_name
+
+vgcreate vg_name /dev/mapper/crypt_name
+
+lvcreate vg_name -L 8GiB vg_name -n swap
+lvcreate vg_name -l 100%FREE vg_name -n sysroot
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> Create and mount LVM filesystems</h3>
+<div class="outline-text-3" id="text-1-5">
+<div class="org-src-container">
+
+<pre class="src src-bash">mkswap /dev/vg_name/swap
+swapon /dev/vg_name/swap
+mkfs.ext4 /dev/vg_name/sysroot
+mount /dev/vg_name/sysroot /mnt
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6"><span class="section-number-3">1.6</span> Mount efi partition to /boot</h3>
+<div class="outline-text-3" id="text-1-6">
+<div class="org-src-container">
+
+<pre class="src src-bash">mkdir /mnt/boot
+mount /dev/sdx1 /mnt/boot
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Install Phase 1</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+<b>- boot uefi on gpt installer disk</b>
+</p>
+
+<p>
+<b>- SET TIME</b>
+</p>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> install base system</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+
+<pre class="src src-bash">xbps-install -S --repository=http://repo.voidlinux.eu/current -r /mnt
+base-system  
+lvm2  
+cryptsetup  
+grub-x86_64-efi  
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> install networking</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+
+<pre class="src src-bash">dhclient  
+inetutils-ifconfig  
+NetworkManager  
+network-manager-applet  
+wireless_tools  
+iw  
+wpa_supplicant  
+ntp  
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> install system tools</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+
+<pre class="src src-bash">ConsoleKit2  
+dbus  
+gnome-icon-theme  
+adwaita-icon-theme  
+gnome-keyring  
+polkit  
+sudo  
+thermald  
+usbutils  
+xinit  
+xmessage  
+xorg  
+xorg-server  
+xorg-server-devel (for nvidia)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> install vital apps</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="org-src-container">
+
+<pre class="src src-bash">gvim  
+xterm  
+nano  
+</pre>
+</div>
+
+<p>
+<b><b>install microcode</b></b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-bash">intel-ucode
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="section-number-3">2.5</span> omnibus:</h3>
+<div class="outline-text-3" id="text-2-5">
+<div class="org-src-container">
+
+<pre class="src src-bash">xbps-install -S --repository=http://repo.voidlinux.eu/current -r /mnt base-system lvm2 cryptsetup grub-x86_64-efi dhclient inetutils-ifconfig NetworkManager network-manager-applet wireless_tools iw wpa_supplicant ntp ConsoleKit2 dbus gnome-icon-theme adwaita-icon-theme gnome-keyring polkit sudo thermald usbutils xinit xmessage xorg xorg-server xorg-server-devel gvim xterm nano intel-ucode
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6"><span class="section-number-3">2.6</span> configure microcode</h3>
+<div class="outline-text-3" id="text-2-6">
+<div class="org-src-container">
+
+<pre class="src src-bash">vim /etc/dracut.conf.d/intel_ucode.conf
+early_microcode=yes
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7"><span class="section-number-3">2.7</span> chroot into new system</h3>
+<div class="outline-text-3" id="text-2-7">
+<div class="org-src-container">
+
+<pre class="src src-bash">mkdir -p /mnt/dev  
+mkdir -p /mnt/proc  
+mkdir -p /mnt/sys  
+mount -t proc /proc /mnt/proc  
+mount --rbind /dev /mnt/dev  
+mount --rbind /sys /mnt/sys  
+chroot /mnt /bin/bash  
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8"><span class="section-number-3">2.8</span> setup new system</h3>
+<div class="outline-text-3" id="text-2-8">
+<div class="org-src-container">
+
+<pre class="src src-bash">passwd root  
+chown root:root /  
+chmod 755 /  
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9" class="outline-3">
+<h3 id="sec-2-9"><span class="section-number-3">2.9</span> hostname (e.g. void-sys)</h3>
+<div class="outline-text-3" id="text-2-9">
+<div class="org-src-container">
+
+<pre class="src src-bash">echo HOSTNAME &gt; /etc/hostname
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-10" class="outline-3">
+<h3 id="sec-2-10"><span class="section-number-3">2.10</span> hosts file</h3>
+<div class="outline-text-3" id="text-2-10">
+<div class="org-src-container">
+
+<pre class="src src-bash">vim /etc/hosts  
+127.0.1.1		HOSTNAME.localdomain		HOSTNAME
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-11" class="outline-3">
+<h3 id="sec-2-11"><span class="section-number-3">2.11</span> locale</h3>
+<div class="outline-text-3" id="text-2-11">
+<div class="org-src-container">
+
+<pre class="src src-bash">vim /etc/default/libc-locales  
+uncomment en-utf8
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-12" class="outline-3">
+<h3 id="sec-2-12"><span class="section-number-3">2.12</span> rc.conf</h3>
+<div class="outline-text-3" id="text-2-12">
+<div class="org-src-container">
+
+<pre class="src src-bash">vim /etc/rc.conf  
+# Set RTC to UTC or localtime  
+HARDWARECLOCK="UTC"  
+# Set timezone, availables timezones at /usr/share/zoneinfo  
+TIMEZONE="America/Los_Angeles"  
+# Keymap to load, see loadkeys(8)  
+KEYMAP="us"  
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-13" class="outline-3">
+<h3 id="sec-2-13"><span class="section-number-3">2.13</span> setup networking</h3>
+<div class="outline-text-3" id="text-2-13">
+<ul class="org-ul">
+<li>Also see <a href="https://wiki.voidlinux.eu/Network_Configuration">Void Wiki</a>  
+<div class="org-src-container">
+
+<pre class="src src-bash">vim /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules
+</pre>
+</div>
+</li>
+<li>add:
+<div class="org-src-container">
+
+<pre class="src src-bash">polkit.addRule(function(action, subject) {
+  if (action.id.indexOf("org.freedesktop.NetworkManager.") == 0 &amp;&amp; subject.isInGroup("network")) {
+      return polkit.Result.YES;
+  }
+});
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-14" class="outline-3">
+<h3 id="sec-2-14"><span class="section-number-3">2.14</span> set machine-id</h3>
+<div class="outline-text-3" id="text-2-14">
+<div class="org-src-container">
+
+<pre class="src src-bash">dbus-uuidgen --ensure  
+cat /var/lib/dbus/machine-id
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-15" class="outline-3">
+<h3 id="sec-2-15"><span class="section-number-3">2.15</span> setup fstab</h3>
+<div class="outline-text-3" id="text-2-15">
+<div class="org-src-container">
+
+<pre class="src src-bash">echo `blkid /dev/[devices]` &gt;&gt; /etc/fstab
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-16" class="outline-3">
+<h3 id="sec-2-16"><span class="section-number-3">2.16</span> dracut</h3>
+<div class="outline-text-3" id="text-2-16">
+<div class="org-src-container">
+
+<pre class="src src-bash">vim /etc/dracut.conf.d/hostonly.conf 
+</pre>
+</div>
+<ul class="org-ul">
+<li>add:  
+<div class="org-src-container">
+
+<pre class="src src-bash">hostonly=yes
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-17" class="outline-3">
+<h3 id="sec-2-17"><span class="section-number-3">2.17</span> Grub</h3>
+<div class="outline-text-3" id="text-2-17">
+<div class="org-src-container">
+
+<pre class="src src-bash">mkdir -p /boot/grub
+grub-mkconfig -o /boot/grub/grub.cfg
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="Void Linux [GRUB]" --recheck
+vim /etc/default/grub
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>add to <code>GRUB_CMDLINE_LINUX_DEFAULT</code>"&#x2026;"
+<div class="org-src-container">
+
+<pre class="src src-bash">rd.auto=1 cryptdevice=UUID=12345678-1234-1234-1234-123456789098:lvm
+</pre>
+</div>
+</li>
+</ul>
+<p>
+(this object is the actual luks partition)
+</p>
+<ul class="org-ul">
+<li>add:  
+<div class="org-src-container">
+
+<pre class="src src-bash">GRUB_ENABLE_CRYPTODISK=y
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-18" class="outline-3">
+<h3 id="sec-2-18"><span class="section-number-3">2.18</span> Configure</h3>
+<div class="outline-text-3" id="text-2-18">
+<div class="org-src-container">
+
+<pre class="src src-bash">xbps-reconfigure -f glibc-locales  
+ls /boot  
+xbps-reconfigure -f linux4.xx  
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="col-md-3"><nav id="table-of-contents">
+<div id="text-table-of-contents" class="bs-docs-sidebar">
+<ul class="nav">
+<li><a href="#sec-1">1. Creating LVM on encrypted Luks Partition</a>
+<ul class="nav">
+<li><a href="#sec-1-1">1.1. Create partition</a></li>
+<li><a href="#sec-1-2">1.2. Format efi as FAT32</a></li>
+<li><a href="#sec-1-3">1.3. Encrypt linux partition</a></li>
+<li><a href="#sec-1-4">1.4. Make LVM partitions</a></li>
+<li><a href="#sec-1-5">1.5. Create and mount LVM filesystems</a></li>
+<li><a href="#sec-1-6">1.6. Mount efi partition to /boot</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2. Install Phase 1</a>
+<ul class="nav">
+<li><a href="#sec-2-1">2.1. install base system</a></li>
+<li><a href="#sec-2-2">2.2. install networking</a></li>
+<li><a href="#sec-2-3">2.3. install system tools</a></li>
+<li><a href="#sec-2-4">2.4. install vital apps</a></li>
+<li><a href="#sec-2-5">2.5. omnibus:</a></li>
+<li><a href="#sec-2-6">2.6. configure microcode</a></li>
+<li><a href="#sec-2-7">2.7. chroot into new system</a></li>
+<li><a href="#sec-2-8">2.8. setup new system</a></li>
+<li><a href="#sec-2-9">2.9. hostname (e.g. void-sys)</a></li>
+<li><a href="#sec-2-10">2.10. hosts file</a></li>
+<li><a href="#sec-2-11">2.11. locale</a></li>
+<li><a href="#sec-2-12">2.12. rc.conf</a></li>
+<li><a href="#sec-2-13">2.13. setup networking</a></li>
+<li><a href="#sec-2-14">2.14. set machine-id</a></li>
+<li><a href="#sec-2-15">2.15. setup fstab</a></li>
+<li><a href="#sec-2-16">2.16. dracut</a></li>
+<li><a href="#sec-2-17">2.17. Grub</a></li>
+<li><a href="#sec-2-18">2.18. Configure</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+</div></div></div>
+<footer id="postamble" class="">
+<div><p class="author">Author: andrew</p>
+<p class="date">Created: 2018-11-05 Mon 14:11</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 26.1 (<a href="http://orgmode.org">Org-mode</a> 9.1.9)</p>
+</div>
+</footer>
+</body>
+</html>
