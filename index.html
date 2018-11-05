@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>Void Linux Install Notes</title>
-<!-- 2018-11-05 Mon 14:11 -->
+<!-- 2018-11-05 Mon 14:33 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Org-mode">
@@ -596,6 +596,106 @@ xbps-reconfigure -f linux4.xx
 </div>
 </div>
 </div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Install Phase 2</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<b>Void first boot</b>
+</p>
+</div>
+
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Setup NetworkManager init</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>disable:
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-bash">sudo rm -fr /var/service/dhcpcd
+sudo rm -fr /var/service/wpa_supplicant
+</pre>
+</div>
+<ul class="org-ul">
+<li>enable:
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-bash">sudo ln -s /etc/sv/NetworkManager /var/service
+sudo ln -s /etc/sv/dbus /var/service
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> network time</h3>
+<div class="outline-text-3" id="text-3-2">
+<div class="org-src-container">
+
+<pre class="src src-bash">ln -s /etc/sv/isc-ntpd/ /var/service/
+vim /etc/ntp.conf
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> thermald</h3>
+<div class="outline-text-3" id="text-3-3">
+<div class="org-src-container">
+
+<pre class="src src-bash">ln -s /etc/sv/thermald /var/service/
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="section-number-3">3.4</span> Add user:</h3>
+<div class="outline-text-3" id="text-3-4">
+<div class="org-src-container">
+
+<pre class="src src-bash">useradd -m -s /bin/bash -U -G wheel,users,audio,video,cdrom,input,network user_name
+passwd user_name
+visudo:
+    uncomment wheel
+reboot
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="section-number-3">3.5</span> nmtui to get wifi</h3>
+</div>
+
+<div id="outline-container-sec-3-6" class="outline-3">
+<h3 id="sec-3-6"><span class="section-number-3">3.6</span> upower (for laptops)</h3>
+<div class="outline-text-3" id="text-3-6">
+<div class="org-src-container">
+
+<pre class="src src-bash">xbps-install -S upower
+ln -s /etc/sv/pulseaudio /var/service/
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-7" class="outline-3">
+<h3 id="sec-3-7"><span class="section-number-3">3.7</span> install wm or de</h3>
+</div>
+
+<div id="outline-container-sec-3-8" class="outline-3">
+<h3 id="sec-3-8"><span class="section-number-3">3.8</span> set xinitrc</h3>
+</div>
+
+<div id="outline-container-sec-3-9" class="outline-3">
+<h3 id="sec-3-9"><span class="section-number-3">3.9</span> startx</h3>
+</div>
+</div>
 </div><div class="col-md-3"><nav id="table-of-contents">
 <div id="text-table-of-contents" class="bs-docs-sidebar">
 <ul class="nav">
@@ -631,13 +731,26 @@ xbps-reconfigure -f linux4.xx
 <li><a href="#sec-2-18">2.18. Configure</a></li>
 </ul>
 </li>
+<li><a href="#sec-3">3. Install Phase 2</a>
+<ul class="nav">
+<li><a href="#sec-3-1">3.1. Setup NetworkManager init</a></li>
+<li><a href="#sec-3-2">3.2. network time</a></li>
+<li><a href="#sec-3-3">3.3. thermald</a></li>
+<li><a href="#sec-3-4">3.4. Add user:</a></li>
+<li><a href="#sec-3-5">3.5. nmtui to get wifi</a></li>
+<li><a href="#sec-3-6">3.6. upower (for laptops)</a></li>
+<li><a href="#sec-3-7">3.7. install wm or de</a></li>
+<li><a href="#sec-3-8">3.8. set xinitrc</a></li>
+<li><a href="#sec-3-9">3.9. startx</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
 </div></div></div>
 <footer id="postamble" class="">
 <div><p class="author">Author: andrew</p>
-<p class="date">Created: 2018-11-05 Mon 14:11</p>
+<p class="date">Created: 2018-11-05 Mon 14:33</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 26.1 (<a href="http://orgmode.org">Org-mode</a> 9.1.9)</p>
 </div>
 </footer>
