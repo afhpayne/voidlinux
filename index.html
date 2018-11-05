@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>Void Linux Install Notes</title>
-<!-- 2018-11-05 Mon 14:33 -->
+<!-- 2018-11-05 Mon 14:45 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Org-mode">
@@ -197,14 +197,14 @@ $(function() {
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Creating LVM on encrypted Luks Partition</h2>
 <div class="outline-text-2" id="text-1">
+<p>
+Notes:
+<b>- drive example = /dev/sdx</b>
+</p>
 <ul class="org-ul">
 <li>Also see <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system#LVM_on_LUKS">Arch Wiki</a>
 </li>
 </ul>
-
-<p>
-<b>drive example = /dev/sdx</b>
-</p>
 </div>
 
 <div id="outline-container-sec-1-1" class="outline-3">
@@ -289,10 +289,8 @@ mount /dev/sdx1 /mnt/boot
 <h2 id="sec-2"><span class="section-number-2">2</span> Install Phase 1</h2>
 <div class="outline-text-2" id="text-2">
 <p>
+Notes:
 <b>- boot uefi on gpt installer disk</b>
-</p>
-
-<p>
 <b>- SET TIME</b>
 </p>
 </div>
@@ -599,12 +597,7 @@ xbps-reconfigure -f linux4.xx
 <div id="outline-container-sec-3" class="outline-2">
 <h2 id="sec-3"><span class="section-number-2">3</span> Install Phase 2</h2>
 <div class="outline-text-2" id="text-3">
-<p>
-<b>Void first boot</b>
-</p>
-</div>
-
-<div id="outline-container-sec-3-1" class="outline-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
 <h3 id="sec-3-1"><span class="section-number-3">3.1</span> Setup NetworkManager init</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
@@ -750,7 +743,7 @@ ln -s /etc/sv/pulseaudio /var/service/
 </div></div></div>
 <footer id="postamble" class="">
 <div><p class="author">Author: andrew</p>
-<p class="date">Created: 2018-11-05 Mon 14:33</p>
+<p class="date">Created: 2018-11-05 Mon 14:45</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 26.1 (<a href="http://orgmode.org">Org-mode</a> 9.1.9)</p>
 </div>
 </footer>
